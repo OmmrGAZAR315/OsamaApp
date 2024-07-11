@@ -48,6 +48,7 @@ class RegisterController extends BaseController
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
             $userData = $this->passUserData($user);
+            $userData['is_admin'] = $user->is_admin;
             return $this->sendResponse($userData, 'User login successfully.');
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
