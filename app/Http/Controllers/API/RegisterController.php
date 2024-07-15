@@ -60,7 +60,7 @@ class RegisterController extends BaseController
         $success['name'] =  $user->name;
         $success['email'] =  $user->email;
         $success['phone'] =  $user->phone;
-        $success['is_admin'] =  false;
+        $success['is_admin'] =  0;
         $success['created_at'] =  $user->created_at;
         return $success;
     }
