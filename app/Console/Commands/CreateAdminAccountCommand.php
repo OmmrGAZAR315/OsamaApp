@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
 
 class CreateAdminAccountCommand extends Command
 {
@@ -39,7 +40,7 @@ class CreateAdminAccountCommand extends Command
         $user->name = $name;
         $user->email = $email;
         $user->phone = $phone;
-        $user->password = crypt($password,'');
+        $user->password = Hash::make($password);
         $user->is_admin = 1;
         $user->save();
         $this->alert('A new admin account has been created successfully');
