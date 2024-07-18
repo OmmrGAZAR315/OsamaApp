@@ -75,9 +75,14 @@ class SlotController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $slot = ScheduleSlot::with('schedule')->find($id);
+        if(!$slot){
+            return $this->sendError('Slot is not found');
+        }
+
+        return $this->sendResponse($slot,'Slot retrieved successfully');
     }
 
     /**

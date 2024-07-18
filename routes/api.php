@@ -11,6 +11,7 @@ Route::controller(RegisterController::class)->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('schedules', 'App\Http\Controllers\API\Schedule\ScheduleController@getSchedules');
+    Route::get('schedules', 'App\Http\Controllers\API\Schedule\ScheduleController@index');
+    Route::get('schedules/{id}', 'App\Http\Controllers\API\Schedule\ScheduleController@show');
     Route::apiResource('slots', 'App\Http\Controllers\API\Schedule\SlotController');
 });
