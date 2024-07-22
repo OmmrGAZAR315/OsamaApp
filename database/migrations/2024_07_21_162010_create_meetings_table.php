@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('schedule_slot_id')->index()->nullable();
             $table->foreign('schedule_slot_id')->references('id')->on('schedule_slots')->onDelete('cascade');
-            $table->string('meeting_provider')->index()->nullable();
-            $table->text('meeting_url')->nullable();
+            // $table->string('meeting_provider')->index()->nullable();
+            // $table->text('meeting_url')->nullable();
             $table->enum('meeting_status', [
                 'pending',
                 'awaiting-payment',
