@@ -14,9 +14,28 @@ class MeetingController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $per_page = $request->per_page;
+        $user_id = $request->user_id;
+        if($user_id != 'all'){
+            $user = User::find($user_id);
+            if(!$user){
+                return $this->sendError('Unknown user - not found');
+            }
+            $meetings = Meeting::with(['scheduleSlot'])->where('user_id',$user_id)->paginate($per_page);
+            if(count($meetings)){
+                return $this->sendResponse($meetings , 'List of the meetings for user ' . $user->name); 
+             }
+        }else{
+            $meetings = Meeting::with(['user','scheduleSlot'])->paginate($per_page);
+            if(count($meetings)){
+                return $this->sendResponse($meetings , 'List of the meetings for all users'); 
+             }
+        }
+       
+
+        return $this->sendResponse('No meetings found for the incoming user',[]);
     }
 
     /**
@@ -85,7 +104,7 @@ class MeetingController extends BaseController
          * @todo Notify admins , users with the new created meeting 
          * It should be email and sms notifications 
          */
-        return $this->sendResponse(Meeting::find($createMeeting->id),'Meeting created successfully');
+        return $this->sendResponse(Meeting::with(['user','scheduleSlot'])->find($createMeeting->id),'Meeting created successfully');
     }
 
     /**
