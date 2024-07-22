@@ -58,6 +58,7 @@ class RegisterController extends BaseController
     public function passUserData($user)
     {
         $success['token'] = $user->createToken('MyApp')->plainTextToken;
+        $success['id'] =  $user->id;
         $success['name'] =  $user->name;
         $success['email'] =  $user->email;
         $success['phone'] =  $user->phone;
