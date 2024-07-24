@@ -16,4 +16,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('slots', 'App\Http\Controllers\API\Schedule\SlotController');
     Route::apiResource('meetings', 'App\Http\Controllers\API\Meeting\MeetingController');
     Route::get('/paymob/callback', 'App\Http\Controllers\API\Payment\PaymobController@callback');
+    Route::post('/paymob/payment/transaction', 'App\Http\Controllers\API\Payment\PaymobController@handleTransaction');
+
 });

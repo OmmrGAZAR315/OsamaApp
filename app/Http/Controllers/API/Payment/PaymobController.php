@@ -15,4 +15,8 @@ class PaymobController extends BaseController
        return $this->sendResponse($request->all(), 'Paymob Callback Response');
     }
 
+    public function handleTransaction(Request $request){
+        logger(json_encode($request->all()));
+        return $this->sendResponse($request->all(), 'paymob/payment/transaction');
+    }
 }
