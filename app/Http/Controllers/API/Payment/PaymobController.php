@@ -12,7 +12,7 @@ class PaymobController extends BaseController
      */
     public function callback(Request $request)
     {
-        $this->sendResponse($request->all(), 'Paymob Callback Response');
+       return $this->sendResponse($request->all(), 'Paymob Callback Response');
     }
 
 }
