@@ -8,7 +8,6 @@ use App\Http\Controllers\API\RegisterController;
 Route::controller(RegisterController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login', 'login');
-    Route::get('/paymob/callback', 'App\Http\Controllers\API\Payment\PaymobController@callback');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -16,5 +15,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('schedules/{id}', 'App\Http\Controllers\API\Schedule\ScheduleController@show');
     Route::apiResource('slots', 'App\Http\Controllers\API\Schedule\SlotController');
     Route::apiResource('meetings', 'App\Http\Controllers\API\Meeting\MeetingController');
-
+    Route::get('/paymob/callback', 'App\Http\Controllers\API\Payment\PaymobController@callback');
 });
