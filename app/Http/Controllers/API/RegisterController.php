@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\API\BaseController as BaseController;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Validator;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\API\BaseController as BaseController;
 
 class RegisterController extends BaseController
 {
@@ -48,6 +49,9 @@ class RegisterController extends BaseController
     {
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
+            DB::table('users')
+            ->where('id' , $user->id)
+            ->update(['fcm_token' => $request->fcm_token ?? null ]);
             $userData = $this->passUserData($user);
             $userData['is_admin'] = $user->is_admin;
             return $this->sendResponse($userData, 'User login successfully.');
