@@ -4,7 +4,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Route;
-use App\Notifications\AccountActivated;
+use App\Notifications\PushNewFCM;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\Payment\PaymobController;
 
@@ -27,10 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(RegisterController::class)->group(function () {
         Route::post('logout', 'logout');
     });
-
-
-    // test fcm 
-    Route::post('/fcm-test', function(){
-       auth()->user()->notify(new AccountActivated);
+    
+    Route::post('/fcm/push', function(){
+        $user = User::where('email',request()->email)->first();
+        $user->notify(new PushNewFCM(request()->title,request()->body));
     });
 });
