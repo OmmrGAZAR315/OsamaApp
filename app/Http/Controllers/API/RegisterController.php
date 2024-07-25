@@ -50,7 +50,7 @@ class RegisterController extends BaseController
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
             DB::table('users')
-            ->where('id' , $user->id)
+            ->where('id', $user->id)
             ->update(['fcm_token' => $request->fcm_token ?? null ]);
             $userData = $this->passUserData($user);
             $userData['is_admin'] = $user->is_admin;
@@ -59,7 +59,15 @@ class RegisterController extends BaseController
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
         }
     }
+    public function logout(Request $request)
+    {
+        auth()->user()->fcm_token = null;
+        auth()->user()->save();
+        // revoke the token 
+        auth()->user()->currentAccessToken()->delete(); 
 
+        return $this->sendResponse($request->email,'User has been logged out successfully');
+    }
     public function passUserData($user)
     {
         $success['token'] = $user->createToken('MyApp')->plainTextToken;
