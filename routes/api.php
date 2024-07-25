@@ -31,7 +31,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // test fcm 
     Route::post('/fcm-test', function(){
-        $user = User::find(1);
-        $user->notify(new AccountActivated);
+       auth()->user()->notify(new AccountActivated);
     });
 });
