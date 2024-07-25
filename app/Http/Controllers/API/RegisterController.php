@@ -24,6 +24,7 @@ class RegisterController extends BaseController
             'phone' => 'required|phone:INTERNATIONAL',
             'password' => 'required',
             'c_password' => 'required|same:password',
+            'fcm_token' => 'required'
         ]);
 
         if($validator->fails()) {
@@ -64,6 +65,7 @@ class RegisterController extends BaseController
         $success['phone'] =  $user->phone;
         $success['is_admin'] =  0;
         $success['created_at'] =  $user->created_at;
+        $success['fcm_token'] =  $user->fcm_token;
         return $success;
     }
 }
