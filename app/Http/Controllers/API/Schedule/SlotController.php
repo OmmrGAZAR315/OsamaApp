@@ -98,6 +98,13 @@ class SlotController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $slot = ScheduleSlot::find($id);
+        try {
+            $slot->destroy($id);
+            return $this->sendResponse('Slot deleted successfully', 'Delete Slot');
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage(), 'Delete Slot');
+        }
+       
     }
 }

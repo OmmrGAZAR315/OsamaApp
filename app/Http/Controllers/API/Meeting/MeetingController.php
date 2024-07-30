@@ -35,7 +35,7 @@ class MeetingController extends BaseController
         }
        
 
-        return $this->sendResponse('No meetings found for the incoming user',[]);
+        return $this->sendResponse([],'No meetings found for the incoming user');
     }
 
     /**
@@ -99,6 +99,9 @@ class MeetingController extends BaseController
         $createMeeting->meeting_date = $meeting_date;
         $createMeeting->save();
 
+        // Set schedule slot status to 0 
+        $schedule_slot->status = 0;
+        $schedule_slot->save();
 
         /**
          * @todo Notify admins , users with the new created meeting 
@@ -128,6 +131,13 @@ class MeetingController extends BaseController
      */
     public function destroy(Meeting $meeting)
     {
-        //
+        // $meeting = Meeting::find($meeting);
+        try {
+            $meeting->delete();
+            return $this->sendResponse('Meeting deleted successfully', 'Delete Meeting');
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage(), 'Delete Meeting');
+        }
+       
     }
 }
