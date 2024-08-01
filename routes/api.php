@@ -15,8 +15,8 @@ Route::controller(RegisterController::class)->group(function () {
 });
 
 Route::controller(SocialController::class)->group(function () {
-        Route::post('social/register', 'register');
-        Route::post('social/login', 'login');
+    Route::post('social/register', 'register');
+    Route::post('social/login', 'login');
 });
 
 
@@ -38,7 +38,17 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/fcm/push', function () {
-        $user = User::where('email', request()->email)->first();
-        $user->notify(new PushNewFCM(request()->title, request()->body));
+        $user = null;
+        if(request()->has('email')) {
+            $user = User::where('email', request()->email)->first();
+        }
+
+        if(request()->has('id')) {
+            $user = User::find(request()->id);
+        }
+        
+        if($user) {
+            $user->notify(new PushNewFCM(request()->title, request()->body));
+        }
     });
 });
