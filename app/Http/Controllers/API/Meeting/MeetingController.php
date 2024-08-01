@@ -140,4 +140,20 @@ class MeetingController extends BaseController
         }
        
     }
+
+    public function approveMeeting(Request $request,$id){
+        $meeting = Meeting::find($id);
+        if($meeting){
+            $user = auth()->user(); 
+            if($user->is_admin){
+                $meeting->meeting_status = 'awaiting-payment';
+                $meeting->save();
+                return $this->sendResponse($meeting, 'Meeting approved successfully');
+            }else{
+                return $this->sendError('User is not admin to approve',[] , 403);
+            }
+        }
+
+        return $this->sendError('Meeting not found',[] , 404);
+    }
 }

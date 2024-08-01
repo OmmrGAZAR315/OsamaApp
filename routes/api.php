@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('schedules/{id}', 'App\Http\Controllers\API\Schedule\ScheduleController@show');
     Route::apiResource('slots', 'App\Http\Controllers\API\Schedule\SlotController');
     Route::apiResource('meetings', 'App\Http\Controllers\API\Meeting\MeetingController');
+    Route::post('meetings/approve/{id}', 'App\Http\Controllers\API\Meeting\MeetingController@approveMeeting');
 
     Route::controller(RegisterController::class)->group(function () {
         Route::post('logout', 'logout');
