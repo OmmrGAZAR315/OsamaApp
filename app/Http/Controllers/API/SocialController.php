@@ -32,7 +32,7 @@ class SocialController extends BaseController
         $input = $request->all();
         $input['provider'] = $request->provider ?? 'google';
         $user = User::create($input);
-        if($user){
+        if($user) {
             Auth::loginUsingId($user->id);
         }
         $userData = $this->passUserData($user);
@@ -49,12 +49,17 @@ class SocialController extends BaseController
     public function login(Request $request): JsonResponse
     {
         $user = User::where('email', $request->email)->first();
-        if($user){
+        if($user) {
+            $user->fcm_token = $request->fcm_token;
             Auth::loginUsingId($user->id);
+            // DB::table('users')
+            // ->where('id', $user->id)
+            // ->update(['fcm_token' => $request->fcm_token ?? null ]);
+
             $userData = $this->passUserData($user);
             $userData['is_admin'] = $user->is_admin;
             return $this->sendResponse($userData, 'User login successfully.');
-        }else{
+        } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
         }
 
