@@ -24,12 +24,12 @@ class MeetingController extends BaseController
                 return $this->sendError('Unknown user - not found');
             }
             $meetings = Meeting::with(['scheduleSlot'])->where('user_id',$user_id)->paginate($per_page);
-            if(count($meetings)){
+            if($meetings){
                 return $this->sendResponse($meetings , 'List of the meetings for user ' . $user->name); 
              }
         }else{
             $meetings = Meeting::with(['user','scheduleSlot'])->paginate($per_page);
-            if(count($meetings)){
+            if($meetings){
                 return $this->sendResponse($meetings , 'List of the meetings for all users'); 
              }
         }
