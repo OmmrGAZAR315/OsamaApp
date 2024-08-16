@@ -35,7 +35,7 @@ class MeetingController extends BaseController
         }
        
 
-        return $this->sendResponse([],'No meetings found for the incoming user');
+        return $this->sendResponse('No meetings found for the incoming user',[]);
     }
 
     /**
