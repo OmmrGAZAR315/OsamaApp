@@ -40,6 +40,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('meetings', 'App\Http\Controllers\API\Meeting\MeetingController');
     Route::post('meetings/approve/{id}', 'App\Http\Controllers\API\Meeting\MeetingController@approveMeeting');
 
+    Route::post('consultant/store', 'App\Http\Controllers\API\ConsultantController@store');
+    Route::delete('consultant/{transaction_id}', 'App\Http\Controllers\API\ConsultantController@delete');
+
     Route::controller(RegisterController::class)->group(function () {
         Route::post('logout', 'logout');
     });

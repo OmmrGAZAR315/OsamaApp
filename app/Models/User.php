@@ -36,6 +36,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $with = ['consultants'];
     /**
      * Get the attributes that should be cast.
      *
@@ -57,5 +58,9 @@ class User extends Authenticatable
     public function routeNotificationForFcm()
     {
         return $this->fcm_token;
+    }
+
+    public function consultants(){
+        return $this->hasMany(UserConsultant::class,'user_id');
     }
 }

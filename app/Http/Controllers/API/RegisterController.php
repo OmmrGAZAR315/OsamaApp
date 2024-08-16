@@ -78,6 +78,7 @@ class RegisterController extends BaseController
         $success['is_admin'] =  0;
         $success['created_at'] =  $user->created_at;
         $success['fcm_token'] =  $user->fcm_token;
+        $success['consultants_count'] =  $user->consultants()->count();
         return $success;
     }
 }
