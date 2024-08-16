@@ -43,6 +43,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('consultant/store', 'App\Http\Controllers\API\ConsultantController@store');
     Route::delete('consultant/{transaction_id}', 'App\Http\Controllers\API\ConsultantController@delete');
 
+    Route::put('user/profile', 'App\Http\Controllers\API\UserController@updateProfile');
+
     Route::controller(RegisterController::class)->group(function () {
         Route::post('logout', 'logout');
     });
