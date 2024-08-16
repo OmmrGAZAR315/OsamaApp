@@ -5,14 +5,21 @@ use Illuminate\Http\Request;
 
 use App\Notifications\PushNewFCM;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\SocialController;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\Payment\PaymobController;
-use App\Http\Controllers\API\SocialController;
+use App\Http\Controllers\API\Auth\ResetPasswordController;
+use App\Http\Controllers\API\Auth\ForgotPasswordController;
 
 Route::controller(RegisterController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login', 'login');
 });
+
+
+Route::post('password/forgot',[ForgotPasswordController::class,'forgotPassword']);
+Route::post('password/reset',[ResetPasswordController::class,'resetPassword']);
+
 
 Route::controller(SocialController::class)->group(function () {
     Route::post('social/register', 'register');
