@@ -156,4 +156,26 @@ class MeetingController extends BaseController
 
         return $this->sendError('Meeting not found',[] , 404);
     }
+
+    public function inProgressMeeting(Request $request,$id){
+        $meeting = Meeting::find($id);
+        if($meeting){
+                $meeting->meeting_status = 'in-progress';
+                $meeting->save();
+                return $this->sendResponse($meeting, 'Meeting in progress success request');
+        }
+
+        return $this->sendError('Meeting not found',[] , 404);
+    }
+
+    public function finishMeeting(Request $request,$id){
+        $meeting = Meeting::find($id);
+        if($meeting){
+                $meeting->meeting_status = 'finished';
+                $meeting->save();
+                return $this->sendResponse($meeting, 'Meeting finished success request');
+        }
+
+        return $this->sendError('Meeting not found',[] , 404);
+    }
 }

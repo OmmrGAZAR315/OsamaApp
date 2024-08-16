@@ -39,6 +39,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('slots', 'App\Http\Controllers\API\Schedule\SlotController');
     Route::apiResource('meetings', 'App\Http\Controllers\API\Meeting\MeetingController');
     Route::post('meetings/approve/{id}', 'App\Http\Controllers\API\Meeting\MeetingController@approveMeeting');
+    Route::post('meetings/in-progress/{id}', 'App\Http\Controllers\API\Meeting\MeetingController@inProgressMeeting');
+    Route::post('meetings/finish/{id}', 'App\Http\Controllers\API\Meeting\MeetingController@finishMeeting');
+
 
     Route::post('consultant/store', 'App\Http\Controllers\API\ConsultantController@store');
     Route::delete('consultant/{transaction_id}', 'App\Http\Controllers\API\ConsultantController@delete');
