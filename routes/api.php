@@ -17,8 +17,8 @@ Route::controller(RegisterController::class)->group(function () {
 });
 
 
-Route::post('password/forgot',[ForgotPasswordController::class,'forgotPassword']);
-Route::post('password/reset',[ResetPasswordController::class,'resetPassword']);
+Route::post('password/forgot', [ForgotPasswordController::class,'forgotPassword']);
+Route::post('password/reset', [ResetPasswordController::class,'resetPassword']);
 
 
 Route::controller(SocialController::class)->group(function () {
@@ -42,10 +42,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('meetings/in-progress/{id}', 'App\Http\Controllers\API\Meeting\MeetingController@inProgressMeeting');
     Route::post('meetings/finish/{id}', 'App\Http\Controllers\API\Meeting\MeetingController@finishMeeting');
 
-
     Route::post('consultant/store', 'App\Http\Controllers\API\ConsultantController@store');
     Route::delete('consultant/{transaction_id}', 'App\Http\Controllers\API\ConsultantController@delete');
-
+    Route::post('user/rtcToken', 'App\Http\Controllers\API\UserController@generateRtcToken');
     Route::put('user/profile', 'App\Http\Controllers\API\UserController@updateProfile');
 
     Route::controller(RegisterController::class)->group(function () {
@@ -61,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
         if(request()->has('id')) {
             $user = User::find(request()->id);
         }
-        
+
         if($user) {
             $user->notify(new PushNewFCM(request()->title, request()->body));
         }
