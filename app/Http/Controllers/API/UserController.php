@@ -10,6 +10,7 @@ use BoogieFromZk\AgoraToken\RtcTokenBuilder2;
 use App\Http\Requests\UpdateUserProfileRequest;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Http\Requests\RtcTokenRequest;
+use App\Models\Meeting;
 
 class UserController extends BaseController
 {
@@ -51,6 +52,12 @@ class UserController extends BaseController
         $token = RtcTokenBuilder2::buildTokenWithUid($appID, $appCertificate, $channelName, $uid, $role, $expiresInSeconds);
 
         if($token){
+
+            $meeting = Meeting::find($request->meeting_id);
+            if($meeting){
+                $meeting->rtc_token = $token;
+                $meeting->save();
+            }
             return $this->sendResponse($token,'Rtc Token Generated');
         }
 

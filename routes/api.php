@@ -43,7 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('meetings/finish/{id}', 'App\Http\Controllers\API\Meeting\MeetingController@finishMeeting');
 
     Route::post('consultant/store', 'App\Http\Controllers\API\ConsultantController@store');
-    Route::delete('consultant/{transaction_id}', 'App\Http\Controllers\API\ConsultantController@delete');
+    Route::delete('consultant', 'App\Http\Controllers\API\ConsultantController@delete');
     Route::post('user/rtcToken', 'App\Http\Controllers\API\UserController@generateRtcToken');
     Route::put('user/profile', 'App\Http\Controllers\API\UserController@updateProfile');
 

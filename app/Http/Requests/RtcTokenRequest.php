@@ -25,6 +25,7 @@ class RtcTokenRequest extends FormRequest
             'app_id' => ['required'],
             'app_certificate' => ['required'],
             'channel_name' => ['required'],
+            'meeting_id' => ['required'],
         ];
     }
 }
