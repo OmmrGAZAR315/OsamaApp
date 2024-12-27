@@ -21,7 +21,10 @@ class ConsultantController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors(), 422);
 
         if (!$request->get('isTicket')) {
-            $subscription = User::where('id', $request->user_id)->update(['subscription' => 1]);
+            $subscription = User::where('id', $request->user_id)->update([
+                'subscription' => 1,
+                'subscription_date' => date('Y-m-d H:i:s')
+            ]);
             return $this->sendResponse([$subscription], 'Subscribed successfully');
         }
 
