@@ -46,8 +46,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('consultant', 'App\Http\Controllers\API\ConsultantController@delete');
     Route::post('user/rtcToken', 'App\Http\Controllers\API\UserController@generateRtcToken');
     Route::put('user/profile', 'App\Http\Controllers\API\UserController@updateProfile');
-    Route::post('user/code', 'App\Http\Controllers\API\UserController@storeCode');
-    Route::post('user/addUser', 'App\Http\Controllers\API\UserController@addUser');
+    Route::post('user/code', 'App\Http\Controllers/CodeController@store');
+    Route::post('user/addUser', 'App\Http\Controllers\API\UserController@store');
+    Route::post('quote', 'App\Http\Controllers\QuoteController@store');
+    Route::get('quote', 'App\Http\Controllers\QuoteController@index');
 
     Route::controller(RegisterController::class)->group(function () {
         Route::post('logout', 'logout');

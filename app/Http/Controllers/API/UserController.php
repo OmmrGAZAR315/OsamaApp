@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Code;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -42,33 +41,7 @@ class UserController extends BaseController
         return $this->sendResponse($consultant, 'consultant deleted successfully');
     }
 
-    public function storeCode(Request $request)
-    {
-        $validator = validator::make($request->all(), [
-            'user_id' => 'nullable',
-            'code' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors(), 422);
-        }
-
-        $ticketsCounter = 0;
-        if (isset($request->user_id)) {
-            UserConsultant::create([
-                'user_id' => $request->user_id,
-                'transaction_id' => 0,
-            ]);
-            $ticketsCounter = UserConsultant::where('user_id', $request->user_id)->count();
-        }
-
-        Code::create([
-            'code' => $request->code,
-        ]);
-
-        return $this->sendResponse($ticketsCounter, 'Code stored successfully');
-    }
-
-    public function addUser(Request $request)
+    public function store(Request $request)
     {
         $validator = validator::make($request->all(), [
             'email' => 'required',
@@ -78,6 +51,9 @@ class UserController extends BaseController
         ]);
         if ($validator->fails())
             return $this->sendError('Validation Error.', $validator->errors(), 422);
+
+        if ($request->user()->role !== 1 && $request->role !== 2)
+            return $this->sendError('You are not authorized to add a user', [], 401);
 
         if (User::where('email', $request->email)->exists()) {
             return $this->sendError('User already exists', [], 422);
