@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('user/rtcToken', 'App\Http\Controllers\API\UserController@generateRtcToken');
     Route::put('user/profile', 'App\Http\Controllers\API\UserController@updateProfile');
     Route::post('user/code', 'App\Http\Controllers\API\UserController@storeCode');
+    Route::post('user/addUser', 'App\Http\Controllers\API\UserController@addUser');
 
     Route::controller(RegisterController::class)->group(function () {
         Route::post('logout', 'logout');

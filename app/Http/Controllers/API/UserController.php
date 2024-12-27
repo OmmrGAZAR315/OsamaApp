@@ -67,6 +67,28 @@ class UserController extends BaseController
         return $this->sendResponse($ticketsCounter, 'Code stored successfully');
     }
 
+    public function addUser(Request $request)
+    {
+        $validator = validator::make($request->all(), [
+            'user_id' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'name' => 'required',
+            'role' => 'required:integer',
+        ]);
+        if ($validator->fails())
+            return $this->sendError('Validation Error.', $validator->errors(), 422);
+
+        User::create([
+            'user_id' => $request->user_id,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'name' => $request->name,
+            'role' => $request->role,
+        ]);
+        return $this->sendResponse(null, 'User register successfully.');
+    }
+
     public function generateRtcToken(RtcTokenRequest $request)
     {
         $appID = $request->get('app_id');
