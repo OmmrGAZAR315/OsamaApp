@@ -79,13 +79,17 @@ class UserController extends BaseController
         if ($validator->fails())
             return $this->sendError('Validation Error.', $validator->errors(), 422);
 
+        if (User::where('email', $request->email)->exists()) {
+            return $this->sendError('User already exists', [], 422);
+        }
+
         User::create([
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'name' => $request->name,
             'role' => $request->role,
         ]);
-        return $this->sendResponse(null, 'User register successfully.');
+        return $this->sendResponse([], 'User register successfully.');
     }
 
     public function generateRtcToken(RtcTokenRequest $request)

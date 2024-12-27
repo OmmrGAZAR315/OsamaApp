@@ -21,18 +21,6 @@ class PaymobController extends BaseController
 
     public function handleTransaction(Request $request)
     {
-        $validator = validator::make($request->all(), [
-            'user_id' => 'required',
-            'isTicket' => 'required',
-        ]);
-        if ($validator->fails())
-            return $this->sendError('Validation Error.', $validator->errors(), 422);
-
-        if (!$request->get('isTicket')) {
-            User::where('user_id')->update(['subscription' => 1]);
-            return $this->sendResponse([], 'Subscription Updated Successfully');
-        }
-
         $payment_id = $request->get('id'); // should evaluate to APPROVED
         $txn_response_code = $request->get('txn_response_code'); // should evaluate to APPROVED
         $data_message = $request->get('data.message'); // should evaluate to Approved
