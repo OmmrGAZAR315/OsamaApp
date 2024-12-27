@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Illuminate\Support\Facades\Validator;
 use Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ class RegisterController extends BaseController
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
         $userData = $this->passUserData($user);
+        $userData['subscription'] = $user->subscription;
 
         return $this->sendResponse($userData, 'User register successfully.');
     }
@@ -54,6 +56,7 @@ class RegisterController extends BaseController
             ->update(['fcm_token' => $request->fcm_token ?? null ]);
             $userData = $this->passUserData($user);
             $userData['is_admin'] = $user->is_admin;
+            $userData['subscription'] = $user->subscription;
             return $this->sendResponse($userData, 'User login successfully.');
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
@@ -63,8 +66,8 @@ class RegisterController extends BaseController
     {
         auth()->user()->fcm_token = null;
         auth()->user()->save();
-        // revoke the token 
-        auth()->user()->currentAccessToken()->delete(); 
+        // revoke the token
+        auth()->user()->currentAccessToken()->delete();
 
         return $this->sendResponse($request->email,'User has been logged out successfully');
     }
