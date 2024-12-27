@@ -45,24 +45,25 @@ class UserController extends BaseController
     public function storeCode(Request $request)
     {
         $validator = validator::make($request->all(), [
+            'user_id' => 'nullable',
             'code' => 'required',
-            'user_id' => 'required'
         ]);
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
 
+        $ticketsCounter = 0;
         if (isset($request->user_id)) {
             UserConsultant::create([
                 'user_id' => $request->user_id,
                 'transaction_id' => 0,
             ]);
+            $ticketsCounter = UserConsultant::where('user_id', $request->user_id)->count();
         }
 
         Code::create([
             'code' => $request->code,
         ]);
-        $ticketsCounter = UserConsultant::where('user_id', $request->user_id)->count();
 
         return $this->sendResponse($ticketsCounter, 'Code stored successfully');
     }
