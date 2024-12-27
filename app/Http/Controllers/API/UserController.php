@@ -71,7 +71,6 @@ class UserController extends BaseController
     public function addUser(Request $request)
     {
         $validator = validator::make($request->all(), [
-            'user_id' => 'required',
             'email' => 'required',
             'password' => 'required',
             'name' => 'required',
@@ -81,7 +80,6 @@ class UserController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors(), 422);
 
         User::create([
-            'user_id' => $request->user_id,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'name' => $request->name,
