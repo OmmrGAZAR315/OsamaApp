@@ -21,19 +21,24 @@ class CodeController extends BaseController
         }
 
         $ticketsCounter = 0;
+        $codeQuery = Code::where('code', $request->code);
         if (isset($request->user_id)) {
-            UserConsultant::create([
-                'user_id' => $request->user_id,
-                'transaction_id' => 0,
+            if ($codeQuery->exists()) {
+                UserConsultant::create([
+                    'user_id' => $request->user_id,
+                    'transaction_id' => 0,
+                ]);
+                $ticketsCounter = UserConsultant::where('user_id', $request->user_id)->count();
+                $codeQuery->delete();
+            } else {
+                return $this->sendError('Code not found', [], 404);
+            }
+        } else
+            Code::create([
+                'code' => $request->code,
             ]);
-            $ticketsCounter = UserConsultant::where('user_id', $request->user_id)->count();
-        }
 
-        Code::create([
-            'code' => $request->code,
-        ]);
-
-        return $this->sendResponse($ticketsCounter, 'Code stored successfully', 201);
+        return response()->json(['message' => 'Code stored successfully', "counter" => $ticketsCounter], 201);
     }
 
 }
