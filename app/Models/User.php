@@ -23,7 +23,8 @@ class User extends Authenticatable
         'password',
         'phone',
         'fcm_token',
-        'provider'
+        'provider',
+        'is_admin'
     ];
 
     /**
