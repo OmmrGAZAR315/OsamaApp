@@ -63,7 +63,7 @@ class UserController extends BaseController
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'name' => $request->name,
-            'role' => $request->role,
+            'is_admin' => $request->role,
         ]);
         return $this->sendResponse([], 'User register successfully.');
     }
