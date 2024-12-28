@@ -52,7 +52,7 @@ class UserController extends BaseController
         if ($validator->fails())
             return $this->sendError('Validation Error.', $validator->errors(), 422);
 
-        if ($request->user()->role !== 1 && $request->user()->role !== 2)
+        if ($request->user()->is_admin == 0)
             return $this->sendError('You are not authorized to add a user', [], 401);
 
         if (User::where('email', $request->email)->exists()) {
