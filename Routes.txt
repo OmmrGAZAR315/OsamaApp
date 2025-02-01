@@ -1,0 +1,39 @@
+
+  GET|HEAD        / ............................................................................................................................................................................... 
+  POST            _ignition/execute-solution ........................................................................ ignition.executeSolution › Spatie\LaravelIgnition › ExecuteSolutionController
+  GET|HEAD        _ignition/health-check .................................................................................... ignition.healthCheck › Spatie\LaravelIgnition › HealthCheckController
+  POST            _ignition/update-config ................................................................................. ignition.updateConfig › Spatie\LaravelIgnition › UpdateConfigController
+  DELETE          api/consultant .................................................................................................................................. API\ConsultantController@delete
+  POST            api/consultant/store ............................................................................................................................. API\ConsultantController@store
+  POST            api/fcm/push .................................................................................................................................................................... 
+  POST            api/login .......................................................................................................................................... API\RegisterController@login
+  POST            api/logout ........................................................................................................................................ API\RegisterController@logout
+  GET|HEAD        api/meetings ............................................................................................................... meetings.index › API\Meeting\MeetingController@index
+  POST            api/meetings ............................................................................................................... meetings.store › API\Meeting\MeetingController@store
+  POST            api/meetings/approve/{id} .......................................................................................................... API\Meeting\MeetingController@approveMeeting
+  POST            api/meetings/finish/{id} ............................................................................................................ API\Meeting\MeetingController@finishMeeting
+  POST            api/meetings/in-progress/{id} ................................................................................................... API\Meeting\MeetingController@inProgressMeeting
+  GET|HEAD        api/meetings/{meeting} ....................................................................................................... meetings.show › API\Meeting\MeetingController@show
+  PUT|PATCH       api/meetings/{meeting} ................................................................................................... meetings.update › API\Meeting\MeetingController@update
+  DELETE          api/meetings/{meeting} ................................................................................................. meetings.destroy › API\Meeting\MeetingController@destroy
+  POST            api/password/forgot ............................................................................................................ API\Auth\ForgotPasswordController@forgotPassword
+  POST            api/password/reset ............................................................................................................... API\Auth\ResetPasswordController@resetPassword
+  GET|HEAD        api/paymob/callback ....................................................................................................................... API\Payment\PaymobController@callback
+  POST            api/paymob/transaction ........................................................................................................... API\Payment\PaymobController@handleTransaction
+  POST            api/register .................................................................................................................................... API\RegisterController@register
+  GET|HEAD        api/schedules ............................................................................................................................. API\Schedule\ScheduleController@index
+  GET|HEAD        api/schedules/{id} ......................................................................................................................... API\Schedule\ScheduleController@show
+  GET|HEAD        api/slots ....................................................................................................................... slots.index › API\Schedule\SlotController@index
+  POST            api/slots ....................................................................................................................... slots.store › API\Schedule\SlotController@store
+  GET|HEAD        api/slots/{slot} .................................................................................................................. slots.show › API\Schedule\SlotController@show
+  PUT|PATCH       api/slots/{slot} .............................................................................................................. slots.update › API\Schedule\SlotController@update
+  DELETE          api/slots/{slot} ............................................................................................................ slots.destroy › API\Schedule\SlotController@destroy
+  POST            api/social/login ..................................................................................................................................... API\SocialController@login
+  POST            api/social/register ............................................................................................................................... API\SocialController@register
+  PUT             api/user/profile ............................................................................................................................... API\UserController@updateProfile
+  POST            api/user/rtcToken ........................................................................................................................... API\UserController@generateRtcToken
+  GET|HEAD        sanctum/csrf-cookie ........................................................................................... sanctum.csrf-cookie › Laravel\Sanctum › CsrfCookieController@show
+  GET|HEAD        up .............................................................................................................................................................................. 
+
+                                                                                                                                                                                Showing [35] routes
+
