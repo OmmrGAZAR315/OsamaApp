@@ -45,6 +45,8 @@ class QuoteController extends BaseController
             $quote->file_path = $request->file('file')->store('quotes', 'public');
 
         $quote->save();
+
+        $quote->file_path = asset('storage/' . $quote->file_path);
         return $this->sendResponse($quote, 'Qoute stored successfully', 201);
     }
 }
