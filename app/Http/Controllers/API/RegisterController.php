@@ -28,7 +28,7 @@ class RegisterController extends BaseController
             'fcm_token' => 'required'
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors(), 422);
         }
 
@@ -48,11 +48,11 @@ class RegisterController extends BaseController
      */
     public function login(Request $request): JsonResponse
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
             DB::table('users')
-            ->where('id', $user->id)
-            ->update(['fcm_token' => $request->fcm_token ?? null ]);
+                ->where('id', $user->id)
+                ->update(['fcm_token' => $request->fcm_token ?? null]);
             $userData = $this->passUserData($user);
             $userData['is_admin'] = $user->is_admin;
             $userData['subscription'] = $user->subscription;
@@ -61,6 +61,7 @@ class RegisterController extends BaseController
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
         }
     }
+
     public function logout(Request $request)
     {
         auth()->user()->fcm_token = null;
@@ -68,19 +69,20 @@ class RegisterController extends BaseController
         // revoke the token
         auth()->user()->currentAccessToken()->delete();
 
-        return $this->sendResponse($request->email,'User has been logged out successfully');
+        return $this->sendResponse($request->email, 'User has been logged out successfully');
     }
+
     public function passUserData($user)
     {
         $success['token'] = $user->createToken('MyApp')->plainTextToken;
-        $success['id'] =  $user->id;
-        $success['name'] =  $user->name;
-        $success['email'] =  $user->email;
-        $success['phone'] =  $user->phone;
-        $success['is_admin'] =  0;
-        $success['created_at'] =  $user->created_at;
-        $success['fcm_token'] =  $user->fcm_token;
-        $success['consultants_count'] =  $user->consultants()->count();
+        $success['id'] = $user->id;
+        $success['name'] = $user->name;
+        $success['email'] = $user->email;
+        $success['phone'] = $user->phone;
+        $success['is_admin'] = 0;
+        $success['created_at'] = $user->created_at;
+        $success['fcm_token'] = $user->fcm_token;
+        $success['consultants_count'] = $user->consultants()->count();
         return $success;
     }
 }
