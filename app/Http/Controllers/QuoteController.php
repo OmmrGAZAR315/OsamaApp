@@ -11,15 +11,19 @@ class QuoteController extends BaseController
 {
     public function index(Request $request)
     {
-        if ($request->has('search')) {
-            $quotes = Quote::where('quote', 'like', '%' . $request->search . '%')->get();
-            return $this->sendResponse($quotes, 'Quotes retrieved successfully');
-        }
-        if ($request->has('from') && $request->has('to')) {
-            $quotes = Quote::whereBetween('created_at', [$request->from, $request->to])->get();
-            return $this->sendResponse($quotes, 'Quotes retrieved successfully');
-        }
-        $quotes = Quote::all();
+        $query = Quote::query();
+        if ($request->has('search'))
+            $query->where('quote', 'like', '%' . $request->search . '%');
+
+        if ($request->has('from') && $request->has('to'))
+            $query->whereBetween('created_at', [$request->from, $request->to]);
+
+        $quotes = $query->get();
+
+        $quotes->each(function ($quote) {
+            $quote->file_url = $quote->file_path ? asset('storage/' . $quote->file_path) : null;
+        });
+
         return $this->sendResponse($quotes, 'Quotes retrieved successfully');
     }
 
@@ -27,18 +31,20 @@ class QuoteController extends BaseController
     {
         $validator = Validator::make($request->all(), [
             'text' => 'required',
-            'image' => 'nullable',
+            'file' => 'nullable',
         ]);
         if ($validator->fails())
             return $this->sendError('Validation Error.', $validator->errors(), 422);
 
         if (Quote::where('quote', $request->text)->exists())
             return $this->sendError('Quote already exists', [], 422);
+        $quote = new Quote();
 
-        $quote = Quote::create([
-            'quote' => $request->text,
-            'image' => $request->image,
-        ]);
+        $quote->quote = $request->text;
+        if ($request->hasFile('file'))
+            $quote->file_path = $request->file('file')->store('quotes', 'public');
+
+        $quote->save();
         return $this->sendResponse($quote, 'Qoute stored successfully', 201);
     }
 }
