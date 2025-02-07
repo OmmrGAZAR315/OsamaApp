@@ -45,7 +45,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('consultant/store', 'App\Http\Controllers\API\ConsultantController@store');
     Route::delete('consultant', 'App\Http\Controllers\API\ConsultantController@delete');
     Route::post('user/rtcToken', 'App\Http\Controllers\API\UserController@generateRtcToken');
-    Route::put('user/profile', 'App\Http\Controllers\API\UserController@updateProfile');
+    Route::get('myProfile', 'App\Http\Controllers\API\UserController@myProfile');
+    Route::post('user/profile', 'App\Http\Controllers\API\UserController@update');
     Route::post('user/code', 'App\Http\Controllers\CodeController@store');
     Route::post('user/addUser', 'App\Http\Controllers\API\UserController@store');
     Route::post('quote', 'App\Http\Controllers\QuoteController@store');

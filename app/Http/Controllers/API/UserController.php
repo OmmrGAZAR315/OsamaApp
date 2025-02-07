@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -15,15 +17,18 @@ use App\Models\Meeting;
 
 class UserController extends BaseController
 {
-    public function updateProfile(UpdateUserProfileRequest $request)
+    public function update(UpdateUserProfileRequest $request)
     {
         $user = User::withCount('consultants')->find($request->id);
         if (!$user) {
-            return $this->sendError('User is not found', []);
+            return $this->sendError('User is not found');
         }
 
         $user->name = $request->name;
         $user->phone = $request->phone;
+        if ($request->hasFile('photo'))
+            $user->profile_pic_path = $request->file('photo')->store('profile_pics', 'public');
+
         $user->save();
 
         return $this->sendResponse($user, 'User profile updated successfully');
@@ -48,6 +53,7 @@ class UserController extends BaseController
             'password' => 'required',
             'name' => 'required',
             'role' => 'required:integer',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
         if ($validator->fails())
             return $this->sendError('Validation Error.', $validator->errors(), 422);
@@ -64,8 +70,16 @@ class UserController extends BaseController
             'password' => bcrypt($request->password),
             'name' => $request->name,
             'is_admin' => $request->role,
+            'profile_pic_path' => $request->file('photo')->store('profile_pics', 'public')
         ]);
         return $this->sendResponse([], 'User register successfully.');
+    }
+
+    public function myProfile(Request $request)
+    {
+        $user = User::withCount('consultants')->find($request->user()->id);
+        $user->profile_pic_path = asset('storage/' . $user->profile_pic_path);
+        return $this->sendResponse($user, 'User profile');
     }
 
     public function generateRtcToken(RtcTokenRequest $request)

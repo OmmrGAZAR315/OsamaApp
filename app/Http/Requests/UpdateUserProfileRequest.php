@@ -22,9 +22,21 @@ class UpdateUserProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required'],
-            'name' => ['required'],
-            'phone' => ['required']
+            'id' => ['nullable'],
+            'name' => ['nullable'],
+            'phone' => ['nullable'],
+            'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg'],
         ];
     }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'id' => $this->id ?? auth()->id(),
+            'name' => $this->name ?? auth()->user()->name ?? '',
+            'phone' => $this->phone ?? auth()->user()->phone ?? null,
+            'photo' => $this->photo ?? auth()->user()->profile_pic_path ?? null,
+        ]);
+    }
+
 }
