@@ -31,6 +31,7 @@ class UserController extends BaseController
 
         $user->save();
 
+        $user->profile_pic_path = asset('storage/' . $user->profile_pic_path);
         return $this->sendResponse($user, 'User profile updated successfully');
 
     }
