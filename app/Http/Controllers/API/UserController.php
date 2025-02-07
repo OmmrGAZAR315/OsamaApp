@@ -78,7 +78,10 @@ class UserController extends BaseController
     public function myProfile(Request $request)
     {
         $user = User::withCount('consultants')->find($request->user()->id);
-        $user->profile_pic_path = asset('storage/' . $user->profile_pic_path);
+        if (!$user)
+            return $this->sendError('User is not found');
+        if ($user->profile_pic_path)
+            $user->profile_pic_path = asset('storage/' . $user->profile_pic_path);
         return $this->sendResponse($user, 'User profile');
     }
 
