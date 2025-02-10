@@ -17,8 +17,8 @@ Route::controller(RegisterController::class)->group(function () {
 });
 
 
-Route::post('password/forgot', [ForgotPasswordController::class,'forgotPassword']);
-Route::post('password/reset', [ResetPasswordController::class,'resetPassword']);
+Route::post('password/forgot', [ForgotPasswordController::class, 'forgotPassword']);
+Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
 
 
 Route::controller(SocialController::class)->group(function () {
@@ -27,13 +27,13 @@ Route::controller(SocialController::class)->group(function () {
 });
 
 
-
 Route::controller(PaymobController::class)->prefix('paymob')->group(function () {
     Route::get('callback', 'callback');
     Route::post('transaction', 'handleTransaction');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('transaction/{user_id}', [PaymobController::class, 'show']);
     Route::get('schedules', 'App\Http\Controllers\API\Schedule\ScheduleController@index');
     Route::get('schedules/{id}', 'App\Http\Controllers\API\Schedule\ScheduleController@show');
     Route::apiResource('slots', 'App\Http\Controllers\API\Schedule\SlotController');
@@ -58,15 +58,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/fcm/push', function () {
         $user = null;
-        if(request()->has('email')) {
+        if (request()->has('email')) {
             $user = User::where('email', request()->email)->first();
         }
 
-        if(request()->has('id')) {
+        if (request()->has('id')) {
             $user = User::find(request()->id);
         }
 
-        if($user) {
+        if ($user) {
             $user->notify(new PushNewFCM(request()->title, request()->body));
         }
     });

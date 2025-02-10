@@ -19,6 +19,15 @@ class PaymobController extends BaseController
         return $this->sendResponse($request->all(), 'Paymob Callback Response');
     }
 
+    public function show($user_id)
+    {
+        $transactions = Transaction::select(['id', 'meeting_id', 'amount', 'created_at'])->whereUserId($user_id)->get();
+        if ($transactions->isEmpty())
+            return $this->sendError('No Transactions Found');
+
+        return $this->sendResponse($transactions, 'Transaction Retrieved Successfully');
+    }
+
     public function handleTransaction(Request $request)
     {
         $payment_id = $request->get('id'); // should evaluate to APPROVED
