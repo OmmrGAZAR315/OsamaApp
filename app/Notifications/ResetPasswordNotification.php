@@ -11,6 +11,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 class ResetPasswordNotification extends Notification
 {
     use Queueable;
+
     public $message;
     public $subject;
     public $fromEmail;
@@ -49,7 +50,7 @@ class ResetPasswordNotification extends Notification
             ->mailer(env('MAIL_MAILER'))
             ->subject($this->subject)
             ->line($this->message)
-            ->line("code : ".$otp->token);
+            ->line("otp : " . $otp->token);
     }
 
     /**

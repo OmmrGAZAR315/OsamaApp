@@ -11,15 +11,16 @@ use App\Http\Requests\API\Auth\ForgotPasswordRequest;
 
 class ForgotPasswordController extends BaseController
 {
-    
-    public function forgotPassword(ForgotPasswordRequest $request){
-        $input= $request->only('email');
-        $user= User::where('email',$input)->first();
-        if(!$user){
-           return $this->sendError('User not found',[]);
-        }
+
+    public function forgotPassword(ForgotPasswordRequest $request)
+    {
+        $input = $request->only('email');
+        $user = User::where('email', $input)->first();
+        if (!$user)
+            return $this->sendError('User not found', []);
+
         $user->notify(new ResetPasswordNotification());
         $success['success'] = true;
-        return response()->json($success,200);
+        return response()->json($success);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\GoogleController;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 use App\Notifications\PushNewFCM;
 use Illuminate\Support\Facades\Route;
@@ -71,3 +71,6 @@ Route::middleware('auth:sanctum')->group(function () {
         }
     });
 });
+Route::get('/auth/google/redirect', [GoogleController::class, 'redirectToGoogle']);
+Route::post('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+Route::post('/auth/google/verify', [GoogleController::class, 'verifyGoogleToken']);

@@ -66,6 +66,9 @@ class UserController extends BaseController
             return $this->sendError('User already exists', [], 422);
         }
 
+        if ($request->isNotFilled('password'))
+            $request->password = Str::random(8);
+
         User::create([
             'email' => $request->email,
             'password' => bcrypt($request->password),
